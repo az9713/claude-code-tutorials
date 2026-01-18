@@ -1,0 +1,22 @@
+{
+  "$schema": "https://claude.ai/schemas/settings.json",
+  "_comment": "Local overrides - copy to settings.local.json and customize. DO NOT commit.",
+
+  "model": {
+    "default": "claude-sonnet-4-20250514",
+    "_comment": "Override model for local development. Options: claude-opus-4-20250514, claude-haiku-3-5-20241022"
+  },
+
+  "permissions": {
+    "_comment": "Add project-specific permissions here",
+    "allow": [
+      "Bash(./scripts/*)"
+    ]
+  },
+
+  "env": {
+    "_comment": "Local environment overrides",
+    "DATABASE_URL": "postgresql://localhost:5432/myapp_dev",
+    "REDIS_URL": "redis://localhost:6379"
+  }
+}

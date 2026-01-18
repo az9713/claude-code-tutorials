@@ -1,0 +1,71 @@
+{
+  "$schema": "https://claude.ai/schemas/mcp.json",
+  "_comment": "MCP servers configuration. Enable servers by setting disabled: false",
+
+  "mcpServers": {
+    "filesystem": {
+      "_comment": "File system access for broader file operations",
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-server-filesystem", "."],
+      "disabled": true
+    },
+
+    "github": {
+      "_comment": "GitHub integration - requires GITHUB_TOKEN env var",
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-server-github"],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      },
+      "disabled": true
+    },
+
+    "postgres": {
+      "_comment": "PostgreSQL database access - requires DATABASE_URL env var",
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-server-postgres"],
+      "env": {
+        "DATABASE_URL": "${DATABASE_URL}"
+      },
+      "disabled": true
+    },
+
+    "sqlite": {
+      "_comment": "SQLite database access",
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-server-sqlite", "--db-path", "./data/app.db"],
+      "disabled": true
+    },
+
+    "memory": {
+      "_comment": "Persistent memory/knowledge graph",
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-server-memory"],
+      "disabled": true
+    },
+
+    "puppeteer": {
+      "_comment": "Browser automation for testing/scraping",
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-server-puppeteer"],
+      "disabled": true
+    },
+
+    "slack": {
+      "_comment": "Slack integration - requires SLACK_BOT_TOKEN env var",
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-server-slack"],
+      "env": {
+        "SLACK_BOT_TOKEN": "${SLACK_BOT_TOKEN}"
+      },
+      "disabled": true
+    },
+
+    "sequential-thinking": {
+      "_comment": "Enhanced reasoning for complex problems",
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-server-sequential-thinking"],
+      "disabled": true
+    }
+  }
+}

@@ -1,0 +1,149 @@
+# ============================================
+# Reference .claudeignore for Full-Stack Projects
+# ============================================
+
+# Dependencies
+node_modules/
+.pnpm-store/
+.yarn/
+bower_components/
+jspm_packages/
+vendor/
+.venv/
+venv/
+__pypackages__/
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.output/
+.svelte-kit/
+.vercel/
+.netlify/
+target/
+*.egg-info/
+
+# Test & coverage
+coverage/
+.nyc_output/
+*.lcov
+.pytest_cache/
+htmlcov/
+
+# Caches
+.cache/
+.parcel-cache/
+.turbo/
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+__pycache__/
+*.py[cod]
+.ruff_cache/
+
+# IDE & editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# OS files
+.DS_Store
+.DS_Store?
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.p12
+secrets/
+credentials/
+.credentials/
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+*.sql
+!migrations/*.sql
+
+# Large data files
+*.csv
+*.xlsx
+*.parquet
+data/raw/
+data/exports/
+
+# Generated files
+*.min.js
+*.min.css
+*.map
+*.chunk.js
+*.bundle.js
+generated/
+.generated/
+
+# Lock files (optional - uncomment if too noisy)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+# Cargo.lock
+# poetry.lock
+
+# Documentation build
+docs/_build/
+site/
+.docusaurus/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Binary & media (large files)
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.iso
+*.dmg
+*.exe
+*.dll
+*.so
+*.dylib
+*.mp4
+*.mov
+*.avi
+*.mp3
+*.wav
+*.pdf
+*.psd
+*.ai
+
+# Kubernetes & Docker
+*.kubeconfig
+.docker/
