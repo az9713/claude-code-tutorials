@@ -1,10 +1,18 @@
 # Tutorial 40: CLI Reference
 
+> ⚠️ **DEPRECATED**: This tutorial has been superseded by **[TUTORIAL_54_CLI_COMPLETE_REFERENCE.md](TUTORIAL_54_CLI_COMPLETE_REFERENCE.md)** which provides comprehensive coverage of all CLI commands, flags, and features introduced in Claude Code v2.1.x.
+>
+> This file is kept for historical reference only. Please refer to TUTORIAL_54 for current CLI documentation.
+
+---
+
 > **Complete command-line reference for Claude Code**
 
 ## Overview
 
 Comprehensive reference of all Claude Code CLI commands and options.
+
+**⚠️ Note**: This tutorial covers approximately 15% of available CLI functionality. For complete coverage including Chrome integration, plugin management, MCP configuration, output formats, and v2.1.x features, see **TUTORIAL_54**.
 
 ---
 

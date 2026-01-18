@@ -6,7 +6,7 @@
 
 ## Overview
 
-This collection contains **53 in-depth tutorials** covering every major feature of Claude Code. Each tutorial is self-contained with:
+This collection contains **67 in-depth tutorials** covering every major feature of Claude Code. Each tutorial is self-contained with:
 
 - Installation and setup instructions
 - Step-by-step guides
@@ -76,7 +76,7 @@ This collection contains **53 in-depth tutorials** covering every major feature 
 | 37 | [Privacy & Data Handling](TUTORIAL_37_PRIVACY_DATA_HANDLING.md) | Data flow and privacy controls |
 | 38 | [Extended Thinking](TUTORIAL_38_EXTENDED_THINKING.md) | Deep reasoning for complex tasks |
 | 39 | [Plan Mode](TUTORIAL_39_PLAN_MODE.md) | Safe planning before execution |
-| 40 | [CLI Reference](TUTORIAL_40_CLI_REFERENCE.md) | Complete command-line reference |
+| 40 | [CLI Reference](TUTORIAL_40_CLI_REFERENCE.md) | ⚠️ *Deprecated - See TUTORIAL_54* |
 | 41 | [Working with Images](TUTORIAL_41_IMAGES.md) | Use images for debugging and design |
 | 42 | [Enterprise Deployment](TUTORIAL_42_ENTERPRISE.md) | Deploy Claude Code for teams |
 
@@ -96,6 +96,25 @@ This collection contains **53 in-depth tutorials** covering every major feature 
 | 52 | [Environment Variables](TUTORIAL_52_ENVIRONMENT_VARIABLES.md) | Configure with env vars |
 | 53 | [Keyboard Shortcuts](TUTORIAL_53_KEYBOARD_SHORTCUTS.md) | Master productivity shortcuts |
 
+### New Features & Advanced (54-67)
+
+| # | Tutorial | Description |
+|---|----------|-------------|
+| 54 | [CLI Complete Reference](TUTORIAL_54_CLI_COMPLETE_REFERENCE.md) | **Comprehensive** CLI reference (replaces #40) |
+| 55 | [Chrome Integration](TUTORIAL_55_CHROME_INTEGRATION.md) | Browser automation with Claude in Chrome |
+| 56 | [LSP Integration](TUTORIAL_56_LSP_INTEGRATION.md) | Language Server Protocol for IDE-like navigation |
+| 57 | [MCP Tool Search](TUTORIAL_57_MCP_TOOL_SEARCH.md) | Context optimization with auto-deferral |
+| 58 | [Advanced Hooks](TUTORIAL_58_ADVANCED_HOOKS.md) | Hook patterns, additionalContext, once:true |
+| 59 | [Wildcard Permissions](TUTORIAL_59_WILDCARD_PERMISSIONS.md) | Security-focused permission patterns |
+| 60 | [Internationalization](TUTORIAL_60_INTERNATIONALIZATION.md) | CJK input, IME support, language settings |
+| 61 | [Terminal Customization](TUTORIAL_61_TERMINAL_CUSTOMIZATION.md) | OSC 8 hyperlinks, Kitty protocol, terminal setup |
+| 62 | [Environment Variables](TUTORIAL_62_ENVIRONMENT_VARIABLES.md) | All CLAUDE_CODE_* and ANTHROPIC_* vars |
+| 63 | [Migration Guide](TUTORIAL_63_MIGRATION_GUIDE.md) | Version upgrades and breaking changes |
+| 64 | [Enterprise Settings](TUTORIAL_64_ENTERPRISE_SETTINGS.md) | Managed settings and team policies |
+| 65 | [Diagnostics](TUTORIAL_65_DIAGNOSTICS.md) | /doctor command and health checks |
+| 66 | [Real-time MCP](TUTORIAL_66_REALTIME_MCP.md) | Dynamic tools and list_changed notifications |
+| 67 | [Configuration Reference](TUTORIAL_67_CONFIGURATION_REFERENCE.md) | **Complete** settings.json with all keys and workflow templates |
+
 ### Additional Resources
 
 | File | Description |
@@ -111,8 +130,10 @@ This collection contains **53 in-depth tutorials** covering every major feature 
 ```
 1. Terminal & Bash - Understand how Claude runs commands
 2. Slash Commands - Learn essential commands
-3. Best Practices - Avoid common mistakes
-4. Keyboard Shortcuts - Work efficiently
+3. CLI Complete Reference - All CLI commands and flags
+4. Best Practices - Avoid common mistakes
+5. Keyboard Shortcuts - Work efficiently
+6. Diagnostics - Self-service troubleshooting with /doctor
 ```
 
 ### Path 2: Power User
@@ -125,6 +146,9 @@ This collection contains **53 in-depth tutorials** covering every major feature 
 5. Checkpointing - Undo and rewind
 6. Skills - Reusable workflows
 7. Hooks - Automation and validation
+8. Advanced Hooks - additionalContext, once:true patterns
+9. MCP Tool Search - Context optimization and auto-deferral
+10. Wildcard Permissions - Flexible security patterns
 ```
 
 ### Path 3: Enterprise/Team Setup
@@ -132,11 +156,15 @@ This collection contains **53 in-depth tutorials** covering every major feature 
 ```
 1. Settings Deep Dive - All configuration options
 2. Permissions - Security controls
-3. Sandbox - Execution isolation
-4. Security Best Practices - Secure usage
-5. Amazon Bedrock - AWS enterprise setup
-6. Google Vertex AI - GCP enterprise setup
-7. Enterprise Deployment - Team rollout
+3. Wildcard Permissions - Advanced permission patterns
+4. Sandbox - Execution isolation
+5. Security Best Practices - Secure usage
+6. Amazon Bedrock - AWS enterprise setup
+7. Google Vertex AI - GCP enterprise setup
+8. Enterprise Deployment - Team rollout
+9. Enterprise Settings - Managed settings and policies
+10. Migration Guide - Version upgrades and rollbacks
+11. Diagnostics - Health monitoring and /doctor
 ```
 
 ### Path 4: CI/CD Integration
@@ -155,7 +183,10 @@ This collection contains **53 in-depth tutorials** covering every major feature 
 1. IDE Integrations - Overview
 2. VS Code Deep Dive - Complete VS Code guide
 3. JetBrains Deep Dive - IntelliJ/PyCharm guide
-4. Keyboard Shortcuts - Productivity
+4. Chrome Integration - Browser automation
+5. LSP Integration - Language server features
+6. Keyboard Shortcuts - Productivity
+7. Terminal Customization - Terminal-specific setup
 ```
 
 ---
@@ -196,7 +227,7 @@ claude
 
 ## Prerequisites
 
-- **Claude Code CLI** v1.0.33 or later
+- **Claude Code CLI** v2.1.x or later (tutorials cover features through v2.1.12)
 - **Node.js** 18+ (for MCP servers and some hooks)
 - **Git** (for version control workflows)
 
@@ -229,3 +260,4 @@ This tutorial collection is provided for educational purposes. Claude Code is a 
 ---
 
 *Generated with Claude Code & AntiGravity, powered by Opus 4.5*
+*Last Updated: January 2026 | Covers Claude Code v2.1.12*

@@ -2057,6 +2057,88 @@ Tasks:
 
 ---
 
+## New in Claude Code v2.1.x
+
+### /remote-env Command (v2.1.0)
+
+View and manage remote session environment:
+
+```
+/remote-env
+```
+
+This command displays:
+- Current remote session status
+- Environment configuration
+- Connected services
+- Active teleport sessions
+
+**Use cases:**
+- Debug remote connection issues
+- Verify environment state after teleport
+- Check remote service availability
+
+### Session URL Attribution in Git (v2.1.9)
+
+Claude Code now includes session URLs in commits and PRs:
+
+**Commit messages:**
+```
+fix: Resolve authentication timeout
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
+Generated in session: https://claude.ai/session/abc123
+```
+
+**Pull request descriptions:**
+```markdown
+## Changes
+
+- Fixed authentication timeout handling
+- Added retry logic for failed connections
+
+---
+
+🤖 Generated with Claude Code
+Session: https://claude.ai/session/abc123
+```
+
+**Benefits:**
+- Traceability of AI-assisted work
+- Link back to conversation context
+- Audit trail for code review
+
+**Configuration:**
+
+```json
+{
+  "git": {
+    "includeSessionUrl": true
+  }
+}
+```
+
+Disable if you prefer not to include session URLs:
+
+```json
+{
+  "git": {
+    "includeSessionUrl": false
+  }
+}
+```
+
+### Enhanced Teleport Stability (v2.1.x)
+
+Recent versions include:
+- Improved session handoff reliability
+- Better handling of large context transfers
+- Reduced latency for teleport operations
+- Enhanced error recovery for interrupted teleports
+
+---
+
 ## Summary
 
 ### Key Takeaways
@@ -2260,5 +2342,5 @@ claude feedback --category teleport
 
 ---
 
-*This tutorial is part of the Claude Code documentation series. For more tutorials,
-visit the documentation directory or run `claude help tutorials`.*
+*This tutorial is part of the Claude Code documentation series.*
+*Version 2.1.x | Last Updated: January 2026*

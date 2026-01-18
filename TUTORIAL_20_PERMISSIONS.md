@@ -2441,6 +2441,240 @@ claude --allowedTools "Read,Glob,Grep"
 
 ---
 
+## New in Claude Code v2.1.x
+
+This section covers recent improvements to the permission system in Claude Code v2.1.x.
+
+### Wildcard Permissions (v2.0.71 / v2.1.0)
+
+Permissions now support wildcard patterns for more flexible command matching:
+
+#### Basic Wildcards
+
+```json
+{
+  "permissions": {
+    "tools": {
+      "Bash": {
+        "allow": [
+          "npm *",        // Any npm command
+          "git status *", // git status with any flags
+          "yarn *"        // Any yarn command
+        ]
+      }
+    }
+  }
+}
+```
+
+#### Pattern Syntax
+
+| Pattern | Matches | Example |
+|---------|---------|---------|
+| `*` | Any sequence of characters | `npm *` → `npm install`, `npm run build` |
+| `git * main` | Git commands targeting main | `git push origin main`, `git checkout main` |
+| `docker * -it` | Docker with interactive flag | `docker run -it ubuntu` |
+
+#### MCP Tool Wildcards (v2.0.71)
+
+Allow entire MCP servers or specific tool patterns:
+
+```json
+{
+  "permissions": {
+    "tools": {
+      "mcp__database__*": {
+        "defaultMode": "allow"
+      },
+      "mcp__github__*": {
+        "defaultMode": "ask"
+      },
+      "mcp__*__read*": {
+        "defaultMode": "allow"
+      }
+    }
+  }
+}
+```
+
+**MCP wildcard patterns:**
+- `mcp__server__*` - All tools from a specific server
+- `mcp__*__toolname` - Specific tool from any server
+- `mcp__*__*` - All MCP tools (use with caution)
+
+#### Task Agent Wildcards (v2.1.0)
+
+Control which sub-agents can be spawned:
+
+```json
+{
+  "permissions": {
+    "tools": {
+      "Task(Explore)": { "defaultMode": "allow" },
+      "Task(Plan)": { "defaultMode": "allow" },
+      "Task(builder)": { "defaultMode": "ask" },
+      "Task(*)": { "defaultMode": "deny" }
+    }
+  }
+}
+```
+
+### Compound Command Restrictions (v2.1.7)
+
+Enhanced security for chained commands prevents permission bypass:
+
+```json
+{
+  "permissions": {
+    "tools": {
+      "Bash": {
+        "allow": ["npm test"],
+        "deny": [
+          "*&&*",      // Deny command chaining
+          "*||*",      // Deny OR chaining
+          "*;*",       // Deny semicolon chaining
+          "*|*"        // Deny piping (be careful with this)
+        ]
+      }
+    }
+  }
+}
+```
+
+**Why this matters:**
+Without compound restrictions, a malicious pattern could exploit:
+```bash
+# Allowed: npm test
+# Blocked: npm test && rm -rf /  (if compound denied)
+```
+
+**Recommended approach:**
+```json
+{
+  "permissions": {
+    "tools": {
+      "Bash": {
+        "allow": [
+          "npm test",
+          "npm run *",
+          "git status"
+        ],
+        "deny": [
+          "*&&*",
+          "*;*"
+        ]
+      }
+    }
+  }
+}
+```
+
+### `/permissions` Search Command (v2.0.67)
+
+Search your permission configuration interactively:
+
+```bash
+/permissions npm
+
+# Output:
+# Permission rules matching "npm":
+#
+# User settings (~/.claude/settings.json):
+#   Bash.allow: "npm test", "npm run *", "npm install"
+#   Bash.deny: "npm publish"
+#
+# Project settings (.claude/settings.json):
+#   Bash.allow: "npm run build"
+```
+
+**Search capabilities:**
+- Search by command name: `/permissions git`
+- Search by tool name: `/permissions Bash`
+- Search by MCP server: `/permissions mcp__github`
+- View all rules: `/permissions *`
+
+### Unreachable Rule Detection with /doctor (v2.1.3)
+
+The `/doctor` command now detects unreachable permission rules:
+
+```bash
+/doctor
+
+# Output includes:
+# ⚠️ Unreachable permission rules detected:
+#
+# In ~/.claude/settings.json:
+#   - Bash.allow: "git push" is shadowed by Bash.deny: "git *"
+#   - Read.allow: ".env.example" is blocked by Read.deny: ".env*"
+#
+# Recommendation: Remove unreachable rules or adjust deny patterns
+```
+
+**Common unreachable rule patterns:**
+
+| Problem | Allow Rule | Deny Rule | Fix |
+|---------|------------|-----------|-----|
+| Broad deny shadows specific allow | `git push origin main` | `git *` | Use `git push *` in deny, specific in allow |
+| Wildcards conflict | `.env.example` | `.env*` | Add explicit exception or rename file |
+| Order confusion | `npm test` | `npm *` | Deny rules always take precedence |
+
+**How to fix unreachable rules:**
+
+1. **Remove the unreachable allow rule** if the deny is intentional
+2. **Narrow the deny pattern** to allow specific exceptions
+3. **Use more specific patterns** in both allow and deny
+
+```json
+{
+  "permissions": {
+    "tools": {
+      "Bash": {
+        "allow": [
+          "git status",
+          "git diff",
+          "git log *"
+        ],
+        "deny": [
+          "git push --force*",  // Specific deny
+          "git reset --hard*"   // Instead of "git *"
+        ]
+      }
+    }
+  }
+}
+```
+
+### Permission Mode Flags (v2.1.0)
+
+Enhanced CLI flags for permission control:
+
+```bash
+# Start with specific permission mode
+claude --permission-mode plan        # Read-only
+claude --permission-mode default     # Normal prompts
+claude --permission-mode acceptEdits # Auto-accept file changes
+
+# Bypass all permissions (dangerous!)
+claude --dangerously-skip-permissions
+
+# Custom permission prompt tool (for automation)
+claude --permission-prompt-tool custom-handler
+```
+
+### Quick Reference: v2.1.x Permission Features
+
+| Feature | Version | Usage |
+|---------|---------|-------|
+| Bash wildcards | v2.1.0 | `Bash(npm *)` |
+| MCP wildcards | v2.0.71 | `mcp__server__*` |
+| Task agent permissions | v2.1.0 | `Task(AgentName)` |
+| Compound command deny | v2.1.7 | `"*&&*"` patterns |
+| `/permissions` search | v2.0.67 | `/permissions <query>` |
+| Unreachable detection | v2.1.3 | `/doctor` shows warnings |
+| Permission mode flag | v2.1.0 | `--permission-mode` |
+
+---
+
 ## Summary
 
 ### Key Takeaways
@@ -2633,5 +2867,5 @@ to ensure Claude does exactly what you want, safely.
 
 ---
 
-*This tutorial is part of the Claude Code Subagents documentation series.*
-*Version 1.0 | Last Updated: 2025*
+*This tutorial is part of the Claude Code documentation series.*
+*Version 2.1.x | Last Updated: January 2026*

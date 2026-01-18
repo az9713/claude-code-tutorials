@@ -2046,6 +2046,220 @@ process.stdin.on('end', () => {
 
 ---
 
+## New in Claude Code v2.1.x
+
+This section covers new hooks features added in Claude Code versions 2.1.0 through 2.1.12.
+
+### PreToolUse `additionalContext` Return (v2.1.9)
+
+PreToolUse hooks can now return additional context that Claude will see alongside the tool input. This is useful for providing validation feedback, documentation hints, or relevant file contents.
+
+**Updated Output Format**:
+
+```json
+{
+  "action": "allow",
+  "additionalContext": "Note: This database is in read-only mode during business hours.\nCurrent schema version: 2.4.1"
+}
+```
+
+**Example: Add File Context**:
+
+```javascript
+#!/usr/bin/env node
+
+const fs = require('fs');
+const path = require('path');
+
+let input = '';
+process.stdin.setEncoding('utf8');
+process.stdin.on('data', chunk => input += chunk);
+
+process.stdin.on('end', () => {
+  try {
+    const data = JSON.parse(input);
+
+    if (data.tool_name === 'Edit' && data.tool_input?.file_path) {
+      const filePath = data.tool_input.file_path;
+
+      // Check for related test file
+      const testFile = filePath.replace(/\.ts$/, '.test.ts');
+      let additionalContext = '';
+
+      if (fs.existsSync(testFile)) {
+        additionalContext = `Related test file exists: ${testFile}\nRemember to update tests after editing.`;
+      }
+
+      // Check for TODO comments in the file
+      if (fs.existsSync(filePath)) {
+        const content = fs.readFileSync(filePath, 'utf8');
+        const todos = content.match(/\/\/\s*TODO:.*/g) || [];
+        if (todos.length > 0) {
+          additionalContext += `\n\nTODOs in this file:\n${todos.join('\n')}`;
+        }
+      }
+
+      console.log(JSON.stringify({
+        action: 'allow',
+        additionalContext: additionalContext || undefined
+      }));
+      return;
+    }
+
+    console.log(JSON.stringify({ action: 'allow' }));
+
+  } catch (error) {
+    console.log(JSON.stringify({ action: 'allow' }));
+  }
+});
+```
+
+### `once: true` Configuration (v2.1.0)
+
+Hooks can be configured to run only once per session. This is useful for initialization tasks that shouldn't repeat.
+
+**Configuration**:
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "name": "first-bash-warning",
+        "command": "node show-warning.js",
+        "tools": ["Bash"],
+        "enabled": true,
+        "once": true
+      }
+    ]
+  }
+}
+```
+
+**Use Cases**:
+- Show a one-time security reminder
+- Log session start information
+- Display project-specific notices
+- Initialize caching mechanisms
+
+### Frontmatter Hooks in Skills & Commands (v2.1.0)
+
+Hooks can now be defined directly in skill and command frontmatter, making them portable with the skill.
+
+**Skill with Embedded Hook**:
+
+```yaml
+---
+name: database-query
+description: Query the database safely
+hooks:
+  PreToolUse:
+    - name: sql-validator
+      command: node validate-sql.js
+      tools:
+        - Bash
+---
+
+# Database Query Skill
+
+This skill helps you query the database safely...
+```
+
+**Benefits**:
+- Hooks travel with skills when shared
+- No separate configuration needed
+- Context-specific hook behavior
+
+### Setup Hook Event (v2.1.10)
+
+A new hook event type `Setup` runs during Claude Code initialization, triggered by `--init` or `--init-only` flags.
+
+**Configuration**:
+
+```json
+{
+  "hooks": {
+    "Setup": [
+      {
+        "name": "environment-check",
+        "command": "node check-environment.js",
+        "enabled": true
+      }
+    ]
+  }
+}
+```
+
+**Input Format**:
+
+```json
+{
+  "hook_type": "Setup",
+  "init_mode": "init",
+  "working_directory": "/path/to/project",
+  "timestamp": "2025-01-15T10:00:00Z"
+}
+```
+
+**Use Cases**:
+- Verify required tools are installed
+- Check environment variables
+- Validate project configuration
+- Pre-warm caches
+
+**Invocation**:
+
+```bash
+# Run setup hooks only
+claude --init-only
+
+# Run setup hooks then continue normally
+claude --init
+```
+
+### Extended Hook Timeout (v2.1.3)
+
+The maximum hook timeout has been extended to 10 minutes (600,000ms) for long-running operations.
+
+**Configuration**:
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "name": "comprehensive-tests",
+        "command": "node run-full-suite.js",
+        "tools": ["Edit", "Write"],
+        "timeout": 600000,
+        "enabled": true
+      }
+    ]
+  }
+}
+```
+
+**Timeout Guidelines**:
+
+| Hook Type | Recommended | Maximum |
+|-----------|-------------|---------|
+| PreToolUse | 5,000ms | 30,000ms |
+| PostToolUse | 30,000ms | 600,000ms |
+| Setup | 60,000ms | 600,000ms |
+| Notification | 10,000ms | 60,000ms |
+
+### Hooks Summary: v2.1.x Changes
+
+| Feature | Version | Description |
+|---------|---------|-------------|
+| `additionalContext` | v2.1.9 | PreToolUse hooks can return context for Claude |
+| `once: true` | v2.1.0 | Run hook only once per session |
+| Frontmatter hooks | v2.1.0 | Define hooks in skill/command YAML |
+| Setup hook event | v2.1.10 | New hook type for `--init` startup |
+| 10-minute timeout | v2.1.3 | Extended maximum timeout for long operations |
+
+---
+
 ## Summary
 
 Claude Code Hooks provide a powerful way to customize and extend Claude's behavior:
@@ -2061,4 +2275,5 @@ For more information, consult the Claude Code documentation or explore the examp
 
 ---
 
-*This tutorial was generated for Claude Code users. Last updated: January 2025.*
+*This tutorial is part of the Claude Code documentation series.*
+*Version 2.1.x | Last Updated: January 2026*

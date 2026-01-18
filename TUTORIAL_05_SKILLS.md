@@ -2758,6 +2758,230 @@ allowed_tools:
 
 ---
 
+## New in Claude Code v2.1.x
+
+This section covers recent additions to the skills framework in Claude Code v2.1.x.
+
+### Automatic Hot-Reload (v2.1.0)
+
+Skills now automatically reload when their files are modified. No restart required:
+
+```bash
+# Edit skill file
+vim ~/.claude/skills/my-skill.md
+
+# Claude Code automatically detects the change
+# Next invocation uses updated skill content
+```
+
+**How it works:**
+- File system watchers monitor skill directories
+- Changes detected within seconds
+- No manual refresh or restart needed
+- Works for all skill locations (project, user, plugin)
+
+**Use cases:**
+- Iterating on skill prompts rapidly
+- Testing different instruction variations
+- Real-time skill development workflow
+
+### `context: fork` Frontmatter (v2.1.0)
+
+Control whether sub-agents spawned from skills inherit the conversation context:
+
+```yaml
+---
+name: isolated-analysis
+description: Run analysis in isolated context
+context: fork
+---
+
+Analyze the provided code without assumptions from prior conversation.
+```
+
+**Options:**
+| Value | Behavior |
+|-------|----------|
+| `fork` | Sub-agent gets full conversation context |
+| `none` (default) | Sub-agent starts fresh |
+
+**When to use `context: fork`:**
+- Sub-agent needs to understand prior discussion
+- Building on earlier analysis or decisions
+- Multi-step workflows with context dependency
+
+**When to use `none` (default):**
+- Clean-slate analysis needed
+- Avoiding bias from prior conversation
+- Independent parallel tasks
+
+### `agent` Field (v2.1.0)
+
+Specify which sub-agent type should execute the skill:
+
+```yaml
+---
+name: security-scan
+description: Run security analysis
+agent: security-auditor
+allowed_tools:
+  - Read
+  - Grep
+  - Glob
+---
+
+Perform a comprehensive security audit of the codebase.
+```
+
+**Available agents:**
+- `Explore` - Fast codebase exploration
+- `Plan` - Architecture and planning
+- `builder` - Code implementation
+- `reviewer` - Code review
+- `fixer` - Bug fixes
+- `test-writer` - Test creation
+- `security-auditor` - Security analysis
+- `refactorer` - Code restructuring
+- Custom agents from plugins
+
+**Benefits:**
+- Skills can leverage specialized agent capabilities
+- Agent-specific tools automatically available
+- Better results for domain-specific tasks
+
+### Nested `.claude/skills` Discovery (v2.1.6)
+
+Claude Code now discovers skills in nested directories:
+
+```
+project/
+├── .claude/
+│   └── skills/
+│       ├── general/
+│       │   ├── code-review.md
+│       │   └── testing.md
+│       ├── frontend/
+│       │   ├── react-patterns.md
+│       │   └── css-best-practices.md
+│       └── backend/
+│           ├── api-design.md
+│           └── database.md
+```
+
+**Discovery rules:**
+- Recursively searches `.claude/skills/` directories
+- Supports arbitrary nesting depth
+- Files sorted alphabetically for predictable loading
+- Works for both project and user skill directories
+
+**Organization benefits:**
+- Group skills by domain or team
+- Easier management of large skill collections
+- Cleaner directory structure
+
+### `${CLAUDE_SESSION_ID}` Variable (v2.1.9)
+
+Access the current session ID within skills for logging and tracking:
+
+```yaml
+---
+name: audit-logger
+description: Log actions with session tracking
+---
+
+Log all significant actions with session ID: ${CLAUDE_SESSION_ID}
+
+For each action taken, record:
+- Session: ${CLAUDE_SESSION_ID}
+- Timestamp
+- Action description
+- Outcome
+```
+
+**Use cases:**
+- Audit trail generation
+- Debugging across sessions
+- Correlating related operations
+- External system integration
+
+**Note:** The variable is expanded when the skill is loaded, not when the file is read.
+
+### `user-invocable` Default Behavior
+
+Skills are now user-invocable by default unless explicitly disabled:
+
+```yaml
+---
+name: internal-helper
+description: Helper used by other skills
+user-invocable: false  # Explicitly hide from user
+---
+```
+
+**Default behavior:**
+| `user-invocable` | Behavior |
+|------------------|----------|
+| Not specified | Skill IS user-invocable (can be called with `/skill-name`) |
+| `true` | Explicitly user-invocable |
+| `false` | Hidden from users, only callable by other skills/agents |
+
+**When to use `user-invocable: false`:**
+- Internal helper skills
+- Skills meant only for agent chaining
+- Implementation details users shouldn't invoke directly
+
+### Complete v2.1.x Skill Example
+
+Here's a skill using all new features:
+
+```yaml
+---
+name: comprehensive-review
+description: Full code review with session tracking
+agent: reviewer
+context: fork
+user-invocable: true
+allowed_tools:
+  - Read
+  - Grep
+  - Glob
+  - Task
+---
+
+# Comprehensive Code Review
+
+Session: ${CLAUDE_SESSION_ID}
+
+## Review Process
+
+1. **Architecture Review**
+   - Check for proper separation of concerns
+   - Verify module boundaries
+
+2. **Code Quality**
+   - Identify code smells
+   - Check for anti-patterns
+
+3. **Security Scan**
+   - Look for common vulnerabilities
+   - Check input validation
+
+4. **Performance**
+   - Identify potential bottlenecks
+   - Check for N+1 queries
+
+Report all findings with severity levels.
+```
+
+**This skill demonstrates:**
+- Uses `reviewer` agent for specialized review capabilities
+- Inherits conversation context with `context: fork`
+- Tracks session with `${CLAUDE_SESSION_ID}`
+- Explicitly marked user-invocable
+- Restricts available tools
+
+---
+
 ## Conclusion
 
 Skills are a powerful way to extend Claude Code with domain-specific expertise. They provide:
@@ -2784,3 +3008,8 @@ Start with built-in skills, then create custom ones as you identify repeated pat
 - Tutorial 04: MCP Server Integration
 - **Tutorial 05: Skills (this document)**
 - Tutorial 06: Advanced Patterns and Workflows
+
+---
+
+*This tutorial is part of the Claude Code documentation series.*
+*Version 2.1.x | Last Updated: January 2026*
