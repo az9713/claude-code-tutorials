@@ -6,7 +6,7 @@
 
 ## Overview
 
-This collection contains **67 in-depth tutorials** covering every major feature of Claude Code. Each tutorial is self-contained with:
+This collection contains **in-depth tutorials** covering every major feature of Claude Code. Each tutorial is self-contained with:
 
 - Installation and setup instructions
 - Step-by-step guides

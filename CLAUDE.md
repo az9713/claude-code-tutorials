@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a comprehensive Claude Code tutorial collection containing 53 in-depth educational markdown files. The project teaches Claude Code mastery from beginner to advanced enterprise usage.
+This is a comprehensive Claude Code tutorial collection with in-depth educational markdown files. The project teaches Claude Code mastery from beginner to advanced enterprise usage.
 
 **Type**: Documentation/Educational
 **License**: MIT
