@@ -150,6 +150,38 @@ This means: "Defer tools when they exceed 10% of the context window."
 | `auto:20` | Minimal deferral | Few MCP servers |
 | `disabled` | No deferral | Debug/testing |
 
+### Environment Variable Alternative
+
+You can also control tool search via the `ENABLE_TOOL_SEARCH` environment variable:
+
+```bash
+# Command line
+ENABLE_TOOL_SEARCH=auto:5 claude
+
+# Or export before starting
+export ENABLE_TOOL_SEARCH=auto:10
+claude
+```
+
+| Value | Behavior |
+|-------|----------|
+| `auto` | Activates at >10% context (default) |
+| `auto:<N>` | Custom threshold (e.g., `auto:5` for 5%) |
+| `true` | Always enabled |
+| `false` | Disabled, all tools loaded upfront |
+
+**Via settings.json env field:**
+
+```json
+{
+  "env": {
+    "ENABLE_TOOL_SEARCH": "auto:5"
+  }
+}
+```
+
+> **Note:** The `mcpToolSearch` setting and `ENABLE_TOOL_SEARCH` env var control the same feature. Use whichever fits your workflow.
+
 ### Example Scenarios
 
 **Scenario 1: Small Project (20 tools)**

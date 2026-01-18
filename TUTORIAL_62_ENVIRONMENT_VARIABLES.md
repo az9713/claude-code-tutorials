@@ -336,6 +336,36 @@ export FORCE_COLOR="1"
 - CI/CD with color-capable output
 - Piping to tools that support ANSI
 
+### ENABLE_TOOL_SEARCH (v2.1.7)
+
+**Purpose:** Control MCP tool search/deferral behavior
+
+```bash
+# Auto mode with custom threshold
+export ENABLE_TOOL_SEARCH="auto:5"
+
+# Always enabled
+export ENABLE_TOOL_SEARCH="true"
+
+# Disabled (load all tools upfront)
+export ENABLE_TOOL_SEARCH="false"
+```
+
+**Values:**
+
+| Value | Behavior |
+|-------|----------|
+| `auto` | Activates when MCP tools exceed 10% of context (default) |
+| `auto:<N>` | Custom threshold, where N is percentage (e.g., `auto:5`) |
+| `true` | Always enabled |
+| `false` | Disabled, all MCP tools loaded upfront |
+
+**Model requirements:**
+- Supported: Sonnet 4+, Opus 4+
+- Not supported: Haiku models
+
+**Related:** See [TUTORIAL_57: MCP Tool Search](TUTORIAL_57_MCP_TOOL_SEARCH.md) for full coverage.
+
 ---
 
 ## Debug & Development
