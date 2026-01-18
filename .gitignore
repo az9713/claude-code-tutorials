@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+.npm/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build artifacts
+dist/
+build/
+out/
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Ignore folder with drafts/transcripts
+.ignore/
+
+# Root-level text files (transcripts, workflows)
+common_coding_agent_workflows.txt
+transcript.txt
+README.txt
