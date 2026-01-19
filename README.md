@@ -225,6 +225,41 @@ claude
 
 ---
 
+## Reference `.claude` Directory
+
+This repository includes a **ready-to-use `.claude` directory** with comprehensive configuration for experienced full-stack developers. Copy it to your project to get started immediately:
+
+```bash
+cp -r .claude /path/to/your/project/
+```
+
+### What's Included
+
+| Category | Contents |
+|----------|----------|
+| **Configuration** | `settings.json`, `mcp.json`, `.claudeignore` |
+| **Commands** | `/commit`, `/pr`, `/review`, `/test`, `/deploy:staging`, `/deploy:production`, `/db:migrate`, `/db:seed` |
+| **Skills** | Git workflow, TDD, debugging, refactoring, React patterns, accessibility, performance, API design, database, security, Docker, CI/CD, monitoring, code review, testing strategy, documentation |
+
+### Structure
+
+```
+.claude/
+├── settings.json              # Pre-approved commands for npm, git, docker, kubectl
+├── mcp.json                   # 8 MCP servers (GitHub, Postgres, etc.) - disabled by default
+├── commands/                  # 8 slash commands
+└── skills/                    # 14 skills organized by domain
+    ├── workflow/              # git-workflow, tdd, debugging, refactoring
+    ├── frontend/              # react-patterns, accessibility, performance
+    ├── backend/               # api-design, database, security
+    ├── devops/                # docker, ci-cd, monitoring
+    └── quality/               # code-review, testing-strategy, documentation
+```
+
+See [`.claude/README.md`](.claude/README.md) for full documentation.
+
+---
+
 ## Prerequisites
 
 - **Claude Code CLI** v2.1.x or later (tutorials cover features through v2.1.12)
